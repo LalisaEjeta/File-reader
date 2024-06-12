@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Upload and View File</title>
+    <style>
+        body {
+            background: linear-gradient(90deg, rgba(231,219,45,1) 0%, rgba(22,255,229,1) 16%, rgba(255,235,5,1) 100%);;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <h2>File reader</h2>
+        <input class="btn-primary border border-3 rounded rounded-5" type="file" id="fileInput">
+        <p>(Image, Audio, Video, PDF)</p>
+        <p>(By Lalisa Ejeta)</p>
+        <div class="d-flex flex-column" id="fileDetails"></div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileDetails = document.getElementById('fileDetails');
+
+        fileInput.addEventListener('change', function () {
+            const file = fileInput.files[0];
+
+            const fileName = document.createElement('p');
+            fileName.textContent = `File Name: ${file.name}`;
+
+            const fileSize = document.createElement('p');
+            fileSize.textContent = `File Size: ${file.size} bytes`;
+
+            // fileDetails.innerHTML = '';
+            // fileDetails.appendChild(fileName);
+            // fileDetails.appendChild(fileSize);
+
+            if (file.type.startsWith('image/')) {
+                const imagePreview = document.createElement('img');
+                imagePreview.src = URL.createObjectURL(file);
+                imagePreview.height = '500';
+                fileDetails.appendChild(imagePreview);
+            } else if (file.type.startsWith('video/')) {
+                const videoPlayer = document.createElement('video');
+                videoPlayer.controls = true;
+                videoPlayer.src = URL.createObjectURL(file);
+                // videoPlayer.width = '500';
+                videoPlayer.height = '500';
+                fileDetails.appendChild(videoPlayer);
+            } else if (file.type.startsWith('audio/')) {
+                const audioPlayer = document.createElement('audio');
+                audioPlayer.controls = true;
+                audioPlayer.src = URL.createObjectURL(file);
+                fileDetails.appendChild(audioPlayer);
+            } else if (file.type === 'application/pdf') {
+                const pdfEmbed = document.createElement('embed');
+                pdfEmbed.src = URL.createObjectURL(file);
+                pdfEmbed.type = 'application/pdf';
+                pdfEmbed.width = '100%';
+                pdfEmbed.height = '500px';
+                fileDetails.appendChild(pdfEmbed);
+            } else {
+                const unsupportedMessage = document.createElement('p');
+                unsupportedMessage.textContent = 'Unsupported file type';
+                fileDetails.appendChild(unsupportedMessage);
+            }
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
